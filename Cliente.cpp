@@ -148,8 +148,7 @@ int main(int argc, char *argv[]) {
 									 << "\n----------------------------------------------- \n\n\n";
 					}
 					else if(tipo_respuesta == "OCUPADO") {
-							cout << "PLAZA SOLICITADA OCUPADA, ASIENTOS DISPONIBLES.... \n";
-							cout << "PLAZA SOLICITADA OCUPADA, ASIENTOS DISPONIBLES.... \n";
+							cout << "PLAZA SOLICITADA OCUPADA, ASIENTOS DISPONIBLES....  \n";
 							/* Cada asiento esta representado por un número de tal forma que
 							 * la primera cifra del número indica la fila (0-9) y la segunda
 							 * cifra indica el asiento (1-3)
