@@ -163,12 +163,12 @@ int main(int argc, char *argv[]) {
 					}
 					else if(tipo_respuesta == "COMPLETO") {
 							cout << "VUELO COMPLETO, CERRANDO SESION DE CLIENTE\n";
-							cout << "\n ----------------------------------------------- \n\n\n";
+							cout << "\n----------------------------------------------- \n\n\n";
 							mensaje = MENS_FIN;
 					}
 					else{
 							cout << "ERROR EN LA RECEPCION DEL MENSAJE\n";
-							cout << "\n ----------------------------------------------- \n\n\n";
+							cout << "\n----------------------------------------------- \n\n\n";
 					}
 			}
 		}
