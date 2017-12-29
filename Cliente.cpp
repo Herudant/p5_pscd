@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 				cout << "> asiento: ";
 				getline(cin, mensaje);
 			}
-			else{
+			else if(mensaje != MENS_FIN){
 				cout << "\nNúmero de fila incorrecto, introduzca un número entre 1-10\n"
 				     << "> fila: ";
 			}
@@ -118,7 +118,6 @@ int main(int argc, char *argv[]) {
 		};
 
 		// Enviamos el mensaje, como cadena de C
-		cout << "ENVIANDO MENSAJE: " << mensaje << endl;
 	  int send_bytes = socket.Send(socket_fd, mensaje);
 
 	  if(send_bytes == -1){
@@ -140,12 +139,11 @@ int main(int argc, char *argv[]) {
 					cout << respuesta.front();
 					string tipo_respuesta = respuesta.front();
 					respuesta.pop_front();
-					cout << "  -- " << respuesta.front() << endl;
 					if(tipo_respuesta == "RESERVADO"){
-							cout << "RESERVA REALIZADA CORRECTAMENTE:    "
+							cout << "RESERVA REALIZADA CORRECTAMENTE:  "
 							     << "FILA: " << fila
-									 << " - ASIENTO : " << asiento
-									 << "\n----------------------------------------------- \n\n\n";
+									 << "   -   ASIENTO : " << asiento
+									 << "\n----------------------------------------------------\n";
 					}
 					else if(tipo_respuesta == "OCUPADO") {
 							cout << "PLAZA SOLICITADA OCUPADA, ASIENTOS DISPONIBLES....  \n";
@@ -174,6 +172,7 @@ int main(int argc, char *argv[]) {
 		}
 	} while(mensaje != MENS_FIN);
 
+	cout << "Finalizando servicio....\n";
   // Cerramos el socket
   int error_code = socket.Close(socket_fd);
   if(error_code == -1){

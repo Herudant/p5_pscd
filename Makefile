@@ -37,7 +37,7 @@ LDFLAGS=-pthread # Flags linkado threads
 
 .PHONY:all
 
-all: ${CLIENT} ${MULTISERVER} ${VUELO}
+all: ${CLIENT} ${MULTISERVER}
 
 # SOCKETS
 # Compilacion libreria de Sockets
@@ -67,6 +67,7 @@ ${MULTISERVER}.o: ${MULTISERVER}.cpp
 # Linkado
 ${MULTISERVER}: ${SOCKET}.o ${MULTISERVER}.o ${VUELO}.o
 	${CC} ${LDFLAGS} ${SOCKET}.o ${MULTISERVER}.o ${VUELO}.o -o ${MULTISERVER} ${SOCKETSFLAGS}
+
 #-----------------------------------------------------------
 # SERVIDOR
 # Compilacion

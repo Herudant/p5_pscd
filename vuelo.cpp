@@ -7,10 +7,12 @@
 #include "vuelo.hpp"
 
 Vuelo::Vuelo(){
-	num_asientos = 0;
+	this -> num_asientos = 0;
+	this -> num_clientes = 0;
+	this -> vuelo_cerrado = false;
 	for (int i = 0; i < NUM_FILAS; i++) {
 		for (int j = 0; j < NUM_ASIENTOS; j++)
-			asiento_libre[i][j] = true;
+			this -> asiento_libre[i][j] = true;
 	}
 }
 
@@ -21,16 +23,17 @@ Vuelo::Vuelo(){
 int Vuelo::reservar(const int fila, const int columna){
   unique_lock<mutex> lck(mtx);
 	int ret = -1;
-	if((fila < NUM_FILAS && columna < NUM_ASIENTOS)) {
+	if((fila < NUM_FILAS && columna < NUM_ASIENTOS) and !vuelo_cerrado) {
 	  if(asiento_libre[fila][columna]){
-			asiento_libre[fila][columna] = false;
-			num_asientos++;
+			this -> asiento_libre[fila][columna] = false;
+			this -> num_asientos++;
 		  ret = (fila * 10) + columna;
 		}
 	}
   return ret;
 }
 
+/* Devuelve una lista de asientos libres codificados */
 list<int> Vuelo::get_libres(){
 	list<int> ret;
 	for (int i = 0; i < NUM_FILAS; i++) {
@@ -47,8 +50,34 @@ bool Vuelo::es_completo(){
 	return (num_asientos == NUM_FILAS * NUM_ASIENTOS) ? true : false;
 }
 
+/* Libera el asiento */
 void Vuelo::liberar(const int fila, const int columna){
 	unique_lock<mutex> lck(mtx);
-	asiento_libre[fila][columna] = 1;
-	num_asientos--;
+	this -> asiento_libre[fila][columna] = 1;
+	this -> num_asientos--;
+}
+
+void Vuelo::nuevoCliente(){
+	unique_lock<mutex> lck(mtx);
+	this -> num_clientes++;
+}
+
+void Vuelo::cerrarCliente(){
+	unique_lock<mutex> lck(mtx);
+	this -> num_clientes--;
+	if(vuelo_cerrado and num_clientes == 0){
+		this -> espera.notify_one();
+	}
+}
+
+void Vuelo::cerrarVuelo(){
+	unique_lock<mutex> lck(mtx);
+	this -> vuelo_cerrado = true;
+	if(num_clientes != 0){
+		this -> espera.wait(lck);
+	}
+}
+
+bool Vuelo::getVuelo_cerrado(){
+	return this -> vuelo_cerrado;
 }

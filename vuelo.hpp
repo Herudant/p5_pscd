@@ -13,7 +13,6 @@
 #include <string>
 #include <mutex>
 #include <list>
-#include <string>
 #include <condition_variable>
 
 using namespace std;
@@ -27,16 +26,22 @@ class Vuelo{
 		Vuelo();
 		int reservar(const int fila, const int columna);
 		void liberar(const int fila, const int columna);
+		void nuevoCliente();
+		void cerrarCliente();
+		void cerrarVuelo();
 		list<int> get_libres();
 		bool es_completo();
+		bool getVuelo_cerrado();
 
 
 	private:
 		mutex mtx;
-		int num_asientos;
-		bool asiento_libre[NUM_FILAS][NUM_ASIENTOS];
-		condition_variable esperando;
+		int num_clientes;
+		int num_asientos;				// Indica el número de asientos ocupados
+		bool asiento_libre[NUM_FILAS][NUM_ASIENTOS];	// Cada asiento del vuelo
+		bool vuelo_cerrado;
 
+		condition_variable espera;
 };
 
 
