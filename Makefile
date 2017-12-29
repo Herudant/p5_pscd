@@ -25,7 +25,6 @@ CC = g++ # Comando de compilacion
 SOCKET=Socket
 CLIENT=Cliente
 SERVER=Servidor
-MULTISERVER=ServidorMulticliente
 VUELO=vuelo
 
 # #################### #
@@ -37,7 +36,7 @@ LDFLAGS=-pthread # Flags linkado threads
 
 .PHONY:all
 
-all: ${CLIENT} ${MULTISERVER}
+all: ${CLIENT} ${SERVER}
 
 # SOCKETS
 # Compilacion libreria de Sockets
@@ -58,26 +57,18 @@ ${CLIENT}.o: ${CLIENT}.cpp
 # Linkado
 ${CLIENT}: ${SOCKET}.o ${CLIENT}.o
 	${CC} ${LDFLAGS} ${SOCKET}.o ${CLIENT}.o -o ${CLIENT} ${SOCKETSFLAGS}
-#-----------------------------------------------------------
-# MULTISERVIDOR
-# Compilacion
-${MULTISERVER}.o: ${MULTISERVER}.cpp
-	${CC} -c ${CPPFLAGS} ${MULTISERVER}.cpp
-
-# Linkado
-${MULTISERVER}: ${SOCKET}.o ${MULTISERVER}.o ${VUELO}.o
-	${CC} ${LDFLAGS} ${SOCKET}.o ${MULTISERVER}.o ${VUELO}.o -o ${MULTISERVER} ${SOCKETSFLAGS}
 
 #-----------------------------------------------------------
 # SERVIDOR
 # Compilacion
 ${SERVER}.o: ${SERVER}.cpp
-	${CC} -c ${CPPFLAGS} ${SERVER}.cpp
+	${CC} -c ${CPPFLAGS} ${MULTISERVER}.cpp
 
 # Linkado
 ${SERVER}: ${SOCKET}.o ${SERVER}.o ${VUELO}.o
 	${CC} ${LDFLAGS} ${SOCKET}.o ${SERVER}.o ${VUELO}.o -o ${SERVER} ${SOCKETSFLAGS}
-#-----------------------------------------------------------
+
+
 
 # LIMPIEZA
 clean:
@@ -86,4 +77,3 @@ clean:
 	$(RM) ${SERVER} ${SERVER}.o
 	$(RM) ${CLIENT} ${CLIENT}.o
 	$(RM) ${VUELO}  ${VUELO}.o
-	$(RM) ${MULTISERVER} ${MULTISERVER}.o

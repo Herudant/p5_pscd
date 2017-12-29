@@ -78,7 +78,10 @@ int main(int argc, char* argv[]){
 		// Accept
 		client_fd[i] = socket.Accept();
 
-		if(client_fd[i] == -1) {
+    if(vuelo.getVuelo_cerrado())
+      break;
+
+		if(client_fd[i] == -1 ) {
 			string mensError(strerror(errno));
     	cerr << "Error en el accept: " + mensError + "\n";
 			// Cerramos el socket
@@ -152,14 +155,13 @@ void servCliente(Socket& soc, int client_fd, Vuelo& vuelo) {
 		} else {
       string mensaje;
 
-      // respuesta = [fila, asiento]
-			list<string> respuesta = decodificar(buffer, '#');
-
 			if(vuelo.es_completo()){
 				// VUELO COMPLETO
 				mensaje = "COMPLETO";
 			}
 			else{
+        // respuesta = [fila, asiento]
+        list<string> respuesta = decodificar(buffer, '#');
 				int asiento = vuelo.reservar((atoi(respuesta.front().c_str()) - 1),
 																     (atoi(respuesta.back().c_str())  - 1));
 				if(asiento != -1){
