@@ -62,7 +62,7 @@ ${CLIENT}: ${SOCKET}.o ${CLIENT}.o
 # SERVIDOR
 # Compilacion
 ${SERVER}.o: ${SERVER}.cpp
-	${CC} -c ${CPPFLAGS} ${MULTISERVER}.cpp
+	${CC} -c ${CPPFLAGS} ${SERVER}.cpp
 
 # Linkado
 ${SERVER}: ${SOCKET}.o ${SERVER}.o ${VUELO}.o
